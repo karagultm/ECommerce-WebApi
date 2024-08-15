@@ -1,4 +1,4 @@
-var builder = WebApplication.CreateBuilder(args);
+﻿var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 
@@ -6,6 +6,13 @@ builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
+
+var env = builder.Environment; // bu sayede enviromentımın altındaki adı almış olacaklar.
+
+builder.Configuration
+    .SetBasePath(env.ContentRootPath)
+    .AddJsonFile("appsettings.json", optional: false) // yani bu appsettingsi her koşulda okumam gerekiyor optional değil
+    .AddJsonFile($"appsettings.{env.EnvironmentName}.json",optional: true); //her zaman development yada production ortamını görmek istmeyebilirm
 
 var app = builder.Build();
 
