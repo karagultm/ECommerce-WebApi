@@ -1,4 +1,6 @@
-﻿var builder = WebApplication.CreateBuilder(args);
+﻿using YoutubeApi.Persistence;
+
+var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 
@@ -12,8 +14,12 @@ var env = builder.Environment; // bu sayede enviromentımın altındaki adı alm
 builder.Configuration
     .SetBasePath(env.ContentRootPath)
     .AddJsonFile("appsettings.json", optional: false) // yani bu appsettingsi her koşulda okumam gerekiyor optional değil
-    .AddJsonFile($"appsettings.{env.EnvironmentName}.json",optional: true); //her zaman development yada production ortamını görmek istmeyebilirm
+    .AddJsonFile($"appsettings.{env.EnvironmentName}.json", optional: true); //her zaman development yada production ortamını görmek istmeyebilirm
 
+//burada builder servies ı configuration altında yazıyoruz çünkü 
+//ilk önce configuration ile hangi enviroment ta olduğumuzu bulsun ondan sonra 
+//o environment a göre configuration ını yapsın
+builder.Services.AddPersistence(builder.Configuration);
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
