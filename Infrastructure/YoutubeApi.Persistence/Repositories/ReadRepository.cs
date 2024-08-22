@@ -14,13 +14,13 @@ namespace YoutubeApi.Persistence.Repositories
         {
             this.dbContext = dbContext;
         }
-        private DbSet<T> Table { get => dbContext.Set<T>(); }
-
+        private DbSet<T> Table { get => dbContext.Set<T>(); } //bu bizim databaesedki table ımızı temsil ediyor açıkçası
+        //biz bu sayede table yazarak her seferinde dbContext.Set<T>() yazmanın önüne geçiyoruz. 
         public async Task<IList<T>> GetAllAsync(Expression<Func<T, bool>>? predicate = null, Func<IQueryable<T>, IIncludableQueryable<T, object>>? include = null, Func<IQueryable<T>, IOrderedQueryable<T>>? orderBy = null, bool enableTracking = false)
         {
-            IQueryable<T> queryable = Table;
+            IQueryable<T> queryable = Table; //bu işlem querry yani sorgu oluşturmamızı sağlıyor. 
             if (!enableTracking) queryable = queryable.AsNoTracking();
-            if (include is not null) queryable = include(queryable);
+            if (include is not null) queryable = include(queryable); //incluede bir nevi join işlemlerini vs göstermemizi sağlayan bir araç
             if (predicate is not null) queryable = queryable.Where(predicate);
             if (orderBy is not null)
                 return await orderBy(queryable).ToListAsync();

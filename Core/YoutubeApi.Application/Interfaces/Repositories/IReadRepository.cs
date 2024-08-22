@@ -7,7 +7,10 @@ namespace YoutubeApi.Application.Interfaces.Repositories
     public interface IReadRepository<T> where T : class, IEntityBase, new()
 
     {
-        Task<IList<T>> GetAllAsync(Expression<Func<T, bool>>? predicate = null,
+        Task<IList<T>> GetAllAsync(Expression<Func<T, bool>>? predicate = null, 
+            // t ture yada flase bize bir cevap verecek misal Age>30 T olabilir
+            //eğer bu doğru ise Expression devreye girecek ve predicate i vereceğiz gibi bir şey olucak
+
             Func<IQueryable<T>, IIncludableQueryable<T, object>>? include = null,
             Func<IQueryable<T>, IOrderedQueryable<T>>? orderBy = null,
             bool enableTracking = false);
