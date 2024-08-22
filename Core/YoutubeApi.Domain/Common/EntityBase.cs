@@ -11,5 +11,8 @@ namespace YoutubeApi.Domain.Common
         public int Id { get; set; }
         public DateTime CreatedDate { get; set; } = DateTime.Now;
         public bool IsDeleted { get; set; } = false;
+
+        // bu entity base in amacı entitylerimiz için ortak değerler vererek
+        // kod tekrarını azaltmak. ve busayede generic repositorylerde kullanabiliyoruz.
     }
 }
