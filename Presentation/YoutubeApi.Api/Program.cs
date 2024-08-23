@@ -1,4 +1,5 @@
 ﻿using YoutubeApi.Persistence;
+using YoutubeApi.Application;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -20,6 +21,8 @@ builder.Configuration
 //ilk önce configuration ile hangi enviroment ta olduğumuzu bulsun ondan sonra 
 //o environment a göre configuration ını yapsın
 builder.Services.AddPersistence(builder.Configuration);
+builder.Services.AddApplication();
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.

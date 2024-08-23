@@ -2,7 +2,7 @@
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using YoutubeApi.Application.Interfaces.Repositories;
-using YoutubeApi.Application.UnitOfWorks;
+using YoutubeApi.Application.Interfaces.UnitOfWorks;
 using YoutubeApi.Persistence.Context;
 using YoutubeApi.Persistence.Repositories;
 using YoutubeApi.Persistence.UnitOfWorks;
