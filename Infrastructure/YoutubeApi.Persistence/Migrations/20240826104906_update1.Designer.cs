@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using YoutubeApi.Persistence.Context;
 
@@ -11,9 +12,11 @@ using YoutubeApi.Persistence.Context;
 namespace YoutubeApi.Persistence.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240826104906_update1")]
+    partial class update1
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -49,23 +52,23 @@ namespace YoutubeApi.Persistence.Migrations
                         new
                         {
                             Id = 1,
-                            CreatedDate = new DateTime(2024, 8, 26, 14, 18, 33, 244, DateTimeKind.Local).AddTicks(6084),
+                            CreatedDate = new DateTime(2024, 8, 26, 13, 49, 6, 6, DateTimeKind.Local).AddTicks(7550),
                             IsDeleted = false,
-                            Name = "Baby & Garden"
+                            Name = "Movies, Home & Toys"
                         },
                         new
                         {
                             Id = 2,
-                            CreatedDate = new DateTime(2024, 8, 26, 14, 18, 33, 244, DateTimeKind.Local).AddTicks(6103),
+                            CreatedDate = new DateTime(2024, 8, 26, 13, 49, 6, 6, DateTimeKind.Local).AddTicks(7567),
                             IsDeleted = false,
-                            Name = "Home, Jewelery & Garden"
+                            Name = "Beauty, Kids & Computers"
                         },
                         new
                         {
                             Id = 3,
-                            CreatedDate = new DateTime(2024, 8, 26, 14, 18, 33, 244, DateTimeKind.Local).AddTicks(6118),
+                            CreatedDate = new DateTime(2024, 8, 26, 13, 49, 6, 6, DateTimeKind.Local).AddTicks(7579),
                             IsDeleted = true,
-                            Name = "Home, Grocery & Jewelery"
+                            Name = "Electronics & Games"
                         });
                 });
 
@@ -101,7 +104,7 @@ namespace YoutubeApi.Persistence.Migrations
                         new
                         {
                             Id = 1,
-                            CreatedDate = new DateTime(2024, 8, 26, 14, 18, 33, 245, DateTimeKind.Local).AddTicks(274),
+                            CreatedDate = new DateTime(2024, 8, 26, 13, 49, 6, 7, DateTimeKind.Local).AddTicks(2318),
                             IsDeleted = false,
                             Name = "Elektrik",
                             ParentId = 0,
@@ -110,7 +113,7 @@ namespace YoutubeApi.Persistence.Migrations
                         new
                         {
                             Id = 2,
-                            CreatedDate = new DateTime(2024, 8, 26, 14, 18, 33, 245, DateTimeKind.Local).AddTicks(276),
+                            CreatedDate = new DateTime(2024, 8, 26, 13, 49, 6, 7, DateTimeKind.Local).AddTicks(2319),
                             IsDeleted = false,
                             Name = "Moda",
                             ParentId = 0,
@@ -119,7 +122,7 @@ namespace YoutubeApi.Persistence.Migrations
                         new
                         {
                             Id = 3,
-                            CreatedDate = new DateTime(2024, 8, 26, 14, 18, 33, 245, DateTimeKind.Local).AddTicks(278),
+                            CreatedDate = new DateTime(2024, 8, 26, 13, 49, 6, 7, DateTimeKind.Local).AddTicks(2321),
                             IsDeleted = false,
                             Name = "Bilgisayar",
                             ParentId = 1,
@@ -128,7 +131,7 @@ namespace YoutubeApi.Persistence.Migrations
                         new
                         {
                             Id = 4,
-                            CreatedDate = new DateTime(2024, 8, 26, 14, 18, 33, 245, DateTimeKind.Local).AddTicks(279),
+                            CreatedDate = new DateTime(2024, 8, 26, 13, 49, 6, 7, DateTimeKind.Local).AddTicks(2323),
                             IsDeleted = false,
                             Name = "Kadın",
                             ParentId = 2,
@@ -172,28 +175,28 @@ namespace YoutubeApi.Persistence.Migrations
                         {
                             Id = 1,
                             CategoryId = 1,
-                            CreatedDate = new DateTime(2024, 8, 26, 14, 18, 33, 248, DateTimeKind.Local).AddTicks(665),
-                            Description = "Quia balıkhaneye şafak mıknatıslı sed.",
+                            CreatedDate = new DateTime(2024, 8, 26, 13, 49, 6, 9, DateTimeKind.Local).AddTicks(1305),
+                            Description = "Anlamsız vitae de iure sinema.",
                             IsDeleted = false,
-                            Title = "Lakin."
+                            Title = "Voluptatem."
                         },
                         new
                         {
                             Id = 2,
                             CategoryId = 3,
-                            CreatedDate = new DateTime(2024, 8, 26, 14, 18, 33, 248, DateTimeKind.Local).AddTicks(704),
-                            Description = "Rem oldular exercitationem dolor bundan.",
+                            CreatedDate = new DateTime(2024, 8, 26, 13, 49, 6, 9, DateTimeKind.Local).AddTicks(1404),
+                            Description = "Çobanın labore biber için umut.",
                             IsDeleted = true,
-                            Title = "Voluptate."
+                            Title = "Nemo."
                         },
                         new
                         {
                             Id = 3,
                             CategoryId = 4,
-                            CreatedDate = new DateTime(2024, 8, 26, 14, 18, 33, 248, DateTimeKind.Local).AddTicks(744),
-                            Description = "Sayfası iusto bahar ex cezbelendi.",
+                            CreatedDate = new DateTime(2024, 8, 26, 13, 49, 6, 9, DateTimeKind.Local).AddTicks(1439),
+                            Description = "Et makinesi totam layıkıyla veniam.",
                             IsDeleted = false,
-                            Title = "Kalemi."
+                            Title = "Dergi."
                         });
                 });
 
@@ -239,23 +242,23 @@ namespace YoutubeApi.Persistence.Migrations
                         {
                             Id = 1,
                             BrandId = 1,
-                            CreatedDate = new DateTime(2024, 8, 26, 14, 18, 33, 251, DateTimeKind.Local).AddTicks(1165),
-                            Description = "The Football Is Good For Training And Recreational Purposes",
-                            Discount = 9.192973414996250m,
+                            CreatedDate = new DateTime(2024, 8, 26, 13, 49, 6, 12, DateTimeKind.Local).AddTicks(7916),
+                            Description = "Ergonomic executive chair upholstered in bonded black leather and PVC padded seat and back for all-day comfort and support",
+                            Discount = 8.183757427360170m,
                             IsDeleted = false,
-                            Price = 335.52m,
-                            Title = "Refined Rubber Pants"
+                            Price = 95.00m,
+                            Title = "Practical Wooden Gloves"
                         },
                         new
                         {
                             Id = 2,
                             BrandId = 3,
-                            CreatedDate = new DateTime(2024, 8, 26, 14, 18, 33, 251, DateTimeKind.Local).AddTicks(1193),
-                            Description = "The Nagasaki Lander is the trademarked name of several series of Nagasaki sport bikes, that started with the 1984 ABC800J",
-                            Discount = 7.673532691411220m,
+                            CreatedDate = new DateTime(2024, 8, 26, 13, 49, 6, 12, DateTimeKind.Local).AddTicks(7944),
+                            Description = "The Apollotech B340 is an affordable wireless mouse with reliable connectivity, 12 months battery life and modern design",
+                            Discount = 9.092312036088530m,
                             IsDeleted = false,
-                            Price = 642.50m,
-                            Title = "Handcrafted Wooden Sausages"
+                            Price = 280.11m,
+                            Title = "Awesome Metal Cheese"
                         });
                 });
 
