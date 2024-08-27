@@ -1,6 +1,6 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using FluentValidation;
+using Microsoft.AspNetCore.Http;
 using SendGrid.Helpers.Errors.Model;
-using System.ComponentModel.DataAnnotations;
 
 namespace YoutubeApi.Application.Exceptions
 {
@@ -23,6 +23,15 @@ namespace YoutubeApi.Application.Exceptions
             httpContext.Response.ContentType = "application/json";
             httpContext.Response.StatusCode = statusCode;
 
+            //eğer validation exception varsa bu kısma gireceğiz ve bukısım ile birlkte döneceğiz
+            if (exception.GetType() == typeof(ValidationException))
+                return httpContext.Response.WriteAsync(new ExceptionModel
+                {
+                    Errors = ((ValidationException)exception).Errors.Select(x => x.ErrorMessage),
+                    StatusCode = StatusCodes.Status400BadRequest //custom olarak status code 400 hatasını  verdiriyoruz
+                }.ToString());
+
+            //diğer türden hataları buradan yakalıyoruz ve ekrana yazdırıyoruz.
             List<string> errors = new()
             {
                 $"Hata Mesajı : {exception.Message}" ,
