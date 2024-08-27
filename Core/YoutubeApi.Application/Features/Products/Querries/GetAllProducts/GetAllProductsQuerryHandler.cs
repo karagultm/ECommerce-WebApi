@@ -40,6 +40,7 @@ namespace YoutubeApi.Application.Features.Products.Querries.GetAllProducts
                 item.Price -= (item.Price * item.Discount / 100);
 
             return map;
+            //throw new Exception("hata");
         }
     }
 }
