@@ -34,8 +34,7 @@ namespace YoutubeApi.Application.Exceptions
             //diğer türden hataları buradan yakalıyoruz ve ekrana yazdırıyoruz.
             List<string> errors = new()
             {
-                $"Hata Mesajı : {exception.Message}" ,
-                $"Mesaj Açıklaması : {exception.InnerException?.ToString()}"
+                $"Hata Mesajı : {exception.Message}"
             };
 
             return httpContext.Response.WriteAsync(new ExceptionModel
