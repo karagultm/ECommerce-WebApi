@@ -1,7 +1,8 @@
-﻿using YoutubeApi.Persistence;
-using YoutubeApi.Application;
-using YoutubeApi.Mapper;
+﻿using YoutubeApi.Application;
 using YoutubeApi.Application.Exceptions;
+using YoutubeApi.Infrastructure;
+using YoutubeApi.Mapper;
+using YoutubeApi.Persistence;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -23,6 +24,7 @@ builder.Configuration
 //ilk önce configuration ile hangi enviroment ta olduğumuzu bulsun ondan sonra 
 //o environment a göre configuration ını yapsın
 builder.Services.AddPersistence(builder.Configuration);
+builder.Services.AddInfrastructure(builder.Configuration);
 builder.Services.AddApplication();
 builder.Services.AddCustomMapper();
 
