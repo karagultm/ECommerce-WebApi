@@ -1,8 +1,8 @@
 ﻿using YoutubeApi.Application.DTOs;
 
-namespace YoutubeApi.Application.Features.Products.Querries.GetAllProducts
+namespace YoutubeApi.Application.Features.Products.Queries.GetAllProducts
 {
-    internal class GetAllProductsQuerryResponse
+    internal class GetAllProductsQueryResponse
     {
         //bu response sınıfı aslında dto sınıfla viewmodel kısmıyla aynı işlevi gösteriyor
         //kullanıcıya gidipte misal producttan özel bilgileri vermiyoruz. 

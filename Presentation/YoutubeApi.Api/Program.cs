@@ -14,15 +14,15 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen(c =>
 {
-    c.SwaggerDoc("v1", new OpenApiInfo { Title = "E-Commorence API", Version = "v1" , Description = "E-Commorence API swagger client" });
+    c.SwaggerDoc("v1", new OpenApiInfo { Title = "E-Commorence API", Version = "v1", Description = "E-Commorence API swagger client" });
     c.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme()
     {
-        Name  = "Authorization",
-        Type  = SecuritySchemeType.ApiKey,
-        Scheme  = "Bearer",
+        Name = "Authorization",
+        Type = SecuritySchemeType.ApiKey,
+        Scheme = "Bearer",
         BearerFormat = "JWT",
-        In  = ParameterLocation.Header,
-        Description  = "'Bearer' yazıp boşluk bıraktıktan sonra Token'ı girebilirisiniz \r\n\r\n Örneğin: \"Bearer e12SDdf233adf^+13341\""
+        In = ParameterLocation.Header,
+        Description = "'Bearer' yazıp boşluk bıraktıktan sonra Token'ı girebilirisiniz \r\n\r\n Örneğin: \"Bearer e12SDdf233adf^+13341\""
     });
     c.AddSecurityRequirement(new OpenApiSecurityRequirement()
     {
@@ -37,8 +37,11 @@ builder.Services.AddSwaggerGen(c =>
             },
             Array.Empty<string>()
         }
-    }); 
+    });
 });
+
+builder.Services.AddHttpContextAccessor();
+builder.Services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
 
 var env = builder.Environment; // bu sayede enviromentımın altındaki adı almış olacaklar.
 
