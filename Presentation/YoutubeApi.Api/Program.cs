@@ -1,4 +1,5 @@
-﻿using YoutubeApi.Application;
+﻿using Microsoft.OpenApi.Models;
+using YoutubeApi.Application;
 using YoutubeApi.Application.Exceptions;
 using YoutubeApi.Infrastructure;
 using YoutubeApi.Mapper;
@@ -11,7 +12,33 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
+builder.Services.AddSwaggerGen(c =>
+{
+    c.SwaggerDoc("v1", new OpenApiInfo { Title = "E-Commorence API", Version = "v1" , Description = "E-Commorence API swagger client" });
+    c.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme()
+    {
+        Name  = "Authorization",
+        Type  = SecuritySchemeType.ApiKey,
+        Scheme  = "Bearer",
+        BearerFormat = "JWT",
+        In  = ParameterLocation.Header,
+        Description  = "'Bearer' yazıp boşluk bıraktıktan sonra Token'ı girebilirisiniz \r\n\r\n Örneğin: \"Bearer e12SDdf233adf^+13341\""
+    });
+    c.AddSecurityRequirement(new OpenApiSecurityRequirement()
+    {
+        {
+            new OpenApiSecurityScheme()
+            {
+                Reference = new OpenApiReference()
+                {
+                    Type = ReferenceType.SecurityScheme,
+                    Id = "Bearer"
+                }
+            },
+            Array.Empty<string>()
+        }
+    }); 
+});
 
 var env = builder.Environment; // bu sayede enviromentımın altındaki adı almış olacaklar.
 
