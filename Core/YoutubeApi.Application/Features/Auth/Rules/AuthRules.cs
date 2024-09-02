@@ -12,7 +12,7 @@ namespace YoutubeApi.Application.Features.Auth.Rules
             return Task.CompletedTask;
         }
 
-        public Task UserOrPasswordShouldNotBeInvalid(User? user, bool checkPassword)
+        public Task EmailOrPasswordShouldNotBeInvalid(User? user, bool checkPassword)
         {
             if (user is null || !checkPassword) throw new UserOrPasswordShouldNotBeInvalidException();
             return Task.CompletedTask;
@@ -20,6 +20,12 @@ namespace YoutubeApi.Application.Features.Auth.Rules
         public Task RefreshTokenShouldNotBeExpired(DateTime? expiryTime)
         {
             if (expiryTime <= DateTime.Now) throw new RefreshTokenShouldNotBeExpiredException();
+            return Task.CompletedTask;
+        }
+
+        public Task EmailAddressShouldBeValid(User? user)
+        {
+            if (user is null) throw new EmailAddressShouldBeValidException();
             return Task.CompletedTask;
         }
     }
