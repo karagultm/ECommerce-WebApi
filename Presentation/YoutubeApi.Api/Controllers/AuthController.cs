@@ -1,7 +1,7 @@
 ﻿using MediatR;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using YoutubeApi.Application.Features.Auth.Command.Login;
+using YoutubeApi.Application.Features.Auth.Command.RefreshToken;
 using YoutubeApi.Application.Features.Auth.Command.Registration;
 
 namespace YoutubeApi.Api.Controllers
@@ -26,8 +26,14 @@ namespace YoutubeApi.Api.Controllers
         [HttpPost]
         public async Task<IActionResult> Login(LoginCommandRequest request)
         {
-            var response = await mediator.Send(request); 
+            var response = await mediator.Send(request);
             return StatusCode(StatusCodes.Status200OK, response); //fakat login işleminde bir response dönüyoruz.
-        } 
+        }
+        [HttpPost]
+        public async Task<IActionResult> RefreshToken(RefreshTokenCommandRequest request)
+        {
+            var response = await mediator.Send(request);
+            return StatusCode(StatusCodes.Status200OK, response);
+        }
     }
 }
