@@ -40,6 +40,12 @@ namespace YoutubeApi.Infrastructure
                 };
 
             });
+
+            services.AddStackExchangeRedisCache(opt =>
+            {
+                opt.Configuration = configuration["RedisCacheSettings:ConnectionString"];
+                opt.InstanceName = configuration["RedisCacheSettings:InstanceName"];
+            });
         }
     }
 }

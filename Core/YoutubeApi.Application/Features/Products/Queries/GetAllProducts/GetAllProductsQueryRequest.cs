@@ -10,3 +10,4 @@ namespace YoutubeApi.Application.Features.Products.Queries.GetAllProducts
         public double CacheTime => 60;
     }
 }
+ 
