@@ -3,7 +3,9 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
+using YoutubeApi.Application.Interfaces.RedisCache;
 using YoutubeApi.Application.Interfaces.Tokens;
+using YoutubeApi.Infrastructure.RedisCache;
 using YoutubeApi.Infrastructure.Tokens;
 
 namespace YoutubeApi.Infrastructure
@@ -14,6 +16,9 @@ namespace YoutubeApi.Infrastructure
         {
             services.Configure<TokenSettings>(configuration.GetSection("JWT"));
             services.AddTransient<ITokenService, TokenService>();
+
+            services.Configure<RedisCacheSettings>(configuration.GetSection("RedisCacheSettings"));
+            services.AddTransient<IRedisCacheService, RedisCacheService>();
 
             services.AddAuthentication(opt =>
             {

@@ -19,14 +19,15 @@ namespace YoutubeApi.Application.Behaviors
             {
                 var cacheKey = querry.CacheKey;
                 var cacheTime = querry.CacheTime;
-
-                var cachedData = await redisCacheService.GetAsync<TResponse>(cacheKey);
-                if (cachedData is not null) //eğer cache in içi doluysa döndür değilse doldur içini
+                //bizim databaseden çekiyor get async
+                var cachedData = await redisCacheService.GetAsync<TResponse>(cacheKey); //benim redis serviceimden veriyi çekiyorum
+                if (cachedData is not null) //eğer cache in içi doluysa döndür değilse doldur içini işlemini yapıyoruz
                     return cachedData;
 
                 var response = await next();
                 if (response is not null )
-                    await redisCacheService.SetAsync(cacheKey, response, DateTime.Now.AddMinutes(cacheTime));
+                    await redisCacheService.SetAsync(cacheKey, response, DateTime.Now.AddMinutes(cacheTime)); 
+                //bu son cachetime ile cahcete nekadar kalacağını hesaplatıyoruz
 
                 return response;
             }
