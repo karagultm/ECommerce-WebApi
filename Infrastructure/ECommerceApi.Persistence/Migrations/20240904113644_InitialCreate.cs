@@ -3,10 +3,12 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
 
+#pragma warning disable CA1814 // Prefer jagged arrays over multidimensional
+
 namespace ECommerceApi.Persistence.Migrations
 {
     /// <inheritdoc />
-    public partial class IdentityDbContextAdded : Migration
+    public partial class InitialCreate : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -31,10 +33,10 @@ namespace ECommerceApi.Persistence.Migrations
                 {
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     FullName = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    UserName = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
-                    NormalizedUserName = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
                     RefreshToken = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     RefreshTokenExpiryTime = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    UserName = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
+                    NormalizedUserName = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
                     Email = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
                     NormalizedEmail = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
                     EmailConfirmed = table.Column<bool>(type: "bit", nullable: false),
@@ -51,6 +53,38 @@ namespace ECommerceApi.Persistence.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_AspNetUsers", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Brands",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Name = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: false),
+                    CreatedDate = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    IsDeleted = table.Column<bool>(type: "bit", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Brands", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Categories",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    ParentId = table.Column<int>(type: "int", nullable: false),
+                    Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Priorty = table.Column<int>(type: "int", nullable: false),
+                    CreatedDate = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    IsDeleted = table.Column<bool>(type: "bit", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Categories", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -159,89 +193,117 @@ namespace ECommerceApi.Persistence.Migrations
                         onDelete: ReferentialAction.Cascade);
                 });
 
-            migrationBuilder.UpdateData(
+            migrationBuilder.CreateTable(
+                name: "Products",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Title = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Description = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    BrandId = table.Column<int>(type: "int", nullable: false),
+                    Price = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
+                    Discount = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
+                    CreatedDate = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    IsDeleted = table.Column<bool>(type: "bit", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Products", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Products_Brands_BrandId",
+                        column: x => x.BrandId,
+                        principalTable: "Brands",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Details",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Title = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Description = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    CategoryId = table.Column<int>(type: "int", nullable: false),
+                    CreatedDate = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    IsDeleted = table.Column<bool>(type: "bit", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Details", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Details_Categories_CategoryId",
+                        column: x => x.CategoryId,
+                        principalTable: "Categories",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "ProductCategories",
+                columns: table => new
+                {
+                    ProductId = table.Column<int>(type: "int", nullable: false),
+                    CategoryId = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_ProductCategories", x => new { x.ProductId, x.CategoryId });
+                    table.ForeignKey(
+                        name: "FK_ProductCategories_Categories_CategoryId",
+                        column: x => x.CategoryId,
+                        principalTable: "Categories",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_ProductCategories_Products_ProductId",
+                        column: x => x.ProductId,
+                        principalTable: "Products",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.InsertData(
                 table: "Brands",
-                keyColumn: "Id",
-                keyValue: 1,
-                columns: new[] { "CreatedDate", "Name" },
-                values: new object[] { new DateTime(2024, 8, 28, 10, 24, 21, 816, DateTimeKind.Local).AddTicks(9348), "Clothing" });
+                columns: new[] { "Id", "CreatedDate", "IsDeleted", "Name" },
+                values: new object[,]
+                {
+                    { 1, new DateTime(2024, 9, 4, 14, 36, 44, 23, DateTimeKind.Local).AddTicks(9454), false, "Outdoors & Grocery" },
+                    { 2, new DateTime(2024, 9, 4, 14, 36, 44, 23, DateTimeKind.Local).AddTicks(9462), false, "Clothing" },
+                    { 3, new DateTime(2024, 9, 4, 14, 36, 44, 23, DateTimeKind.Local).AddTicks(9467), true, "Outdoors" }
+                });
 
-            migrationBuilder.UpdateData(
-                table: "Brands",
-                keyColumn: "Id",
-                keyValue: 2,
-                columns: new[] { "CreatedDate", "Name" },
-                values: new object[] { new DateTime(2024, 8, 28, 10, 24, 21, 816, DateTimeKind.Local).AddTicks(9354), "Books" });
-
-            migrationBuilder.UpdateData(
-                table: "Brands",
-                keyColumn: "Id",
-                keyValue: 3,
-                columns: new[] { "CreatedDate", "Name" },
-                values: new object[] { new DateTime(2024, 8, 28, 10, 24, 21, 816, DateTimeKind.Local).AddTicks(9361), "Home" });
-
-            migrationBuilder.UpdateData(
+            migrationBuilder.InsertData(
                 table: "Categories",
-                keyColumn: "Id",
-                keyValue: 1,
-                column: "CreatedDate",
-                value: new DateTime(2024, 8, 28, 10, 24, 21, 817, DateTimeKind.Local).AddTicks(7499));
+                columns: new[] { "Id", "CreatedDate", "IsDeleted", "Name", "ParentId", "Priorty" },
+                values: new object[,]
+                {
+                    { 1, new DateTime(2024, 9, 4, 14, 36, 44, 24, DateTimeKind.Local).AddTicks(5997), false, "Elektrik", 0, 1 },
+                    { 2, new DateTime(2024, 9, 4, 14, 36, 44, 24, DateTimeKind.Local).AddTicks(5999), false, "Moda", 0, 2 },
+                    { 3, new DateTime(2024, 9, 4, 14, 36, 44, 24, DateTimeKind.Local).AddTicks(6001), false, "Bilgisayar", 1, 1 },
+                    { 4, new DateTime(2024, 9, 4, 14, 36, 44, 24, DateTimeKind.Local).AddTicks(6002), false, "Kadın", 2, 1 }
+                });
 
-            migrationBuilder.UpdateData(
-                table: "Categories",
-                keyColumn: "Id",
-                keyValue: 2,
-                column: "CreatedDate",
-                value: new DateTime(2024, 8, 28, 10, 24, 21, 817, DateTimeKind.Local).AddTicks(7504));
-
-            migrationBuilder.UpdateData(
-                table: "Categories",
-                keyColumn: "Id",
-                keyValue: 3,
-                column: "CreatedDate",
-                value: new DateTime(2024, 8, 28, 10, 24, 21, 817, DateTimeKind.Local).AddTicks(7509));
-
-            migrationBuilder.UpdateData(
-                table: "Categories",
-                keyColumn: "Id",
-                keyValue: 4,
-                column: "CreatedDate",
-                value: new DateTime(2024, 8, 28, 10, 24, 21, 817, DateTimeKind.Local).AddTicks(7513));
-
-            migrationBuilder.UpdateData(
+            migrationBuilder.InsertData(
                 table: "Details",
-                keyColumn: "Id",
-                keyValue: 1,
-                columns: new[] { "CreatedDate", "Description", "Title" },
-                values: new object[] { new DateTime(2024, 8, 28, 10, 24, 21, 819, DateTimeKind.Local).AddTicks(7404), "Layıkıyla çünkü sit sunt magni.", "Sevindi." });
+                columns: new[] { "Id", "CategoryId", "CreatedDate", "Description", "IsDeleted", "Title" },
+                values: new object[,]
+                {
+                    { 1, 1, new DateTime(2024, 9, 4, 14, 36, 44, 26, DateTimeKind.Local).AddTicks(6884), "Dolores sit voluptatem qui tempora.", false, "Sevindi." },
+                    { 2, 3, new DateTime(2024, 9, 4, 14, 36, 44, 26, DateTimeKind.Local).AddTicks(6915), "Quia ex değirmeni exercitationem accusantium.", true, "Numquam." },
+                    { 3, 4, new DateTime(2024, 9, 4, 14, 36, 44, 26, DateTimeKind.Local).AddTicks(6950), "Için bilgiyasayarı nemo değerli doloremque.", false, "Ve." }
+                });
 
-            migrationBuilder.UpdateData(
-                table: "Details",
-                keyColumn: "Id",
-                keyValue: 2,
-                columns: new[] { "CreatedDate", "Description", "Title" },
-                values: new object[] { new DateTime(2024, 8, 28, 10, 24, 21, 819, DateTimeKind.Local).AddTicks(7447), "Koşuyorlar gitti aspernatur iure reprehenderit.", "Inventore." });
-
-            migrationBuilder.UpdateData(
-                table: "Details",
-                keyColumn: "Id",
-                keyValue: 3,
-                columns: new[] { "CreatedDate", "Description", "Title" },
-                values: new object[] { new DateTime(2024, 8, 28, 10, 24, 21, 819, DateTimeKind.Local).AddTicks(7478), "Molestiae iusto sıradanlıktan gördüm ex.", "Bahar." });
-
-            migrationBuilder.UpdateData(
+            migrationBuilder.InsertData(
                 table: "Products",
-                keyColumn: "Id",
-                keyValue: 1,
-                columns: new[] { "CreatedDate", "Discount", "Price", "Title" },
-                values: new object[] { new DateTime(2024, 8, 28, 10, 24, 21, 822, DateTimeKind.Local).AddTicks(5629), 5.236971126133640m, 700.86m, "Small Granite Salad" });
-
-            migrationBuilder.UpdateData(
-                table: "Products",
-                keyColumn: "Id",
-                keyValue: 2,
-                columns: new[] { "CreatedDate", "Description", "Discount", "Price", "Title" },
-                values: new object[] { new DateTime(2024, 8, 28, 10, 24, 21, 822, DateTimeKind.Local).AddTicks(5654), "Ergonomic executive chair upholstered in bonded black leather and PVC padded seat and back for all-day comfort and support", 3.193885460961560m, 431.60m, "Intelligent Wooden Mouse" });
+                columns: new[] { "Id", "BrandId", "CreatedDate", "Description", "Discount", "IsDeleted", "Price", "Title" },
+                values: new object[,]
+                {
+                    { 1, 1, new DateTime(2024, 9, 4, 14, 36, 44, 29, DateTimeKind.Local).AddTicks(1358), "The Nagasaki Lander is the trademarked name of several series of Nagasaki sport bikes, that started with the 1984 ABC800J", 5.573909475490830m, false, 892.08m, "Practical Soft Chicken" },
+                    { 2, 3, new DateTime(2024, 9, 4, 14, 36, 44, 29, DateTimeKind.Local).AddTicks(1393), "Ergonomic executive chair upholstered in bonded black leather and PVC padded seat and back for all-day comfort and support", 6.49547447962450m, false, 146.51m, "Rustic Plastic Hat" }
+                });
 
             migrationBuilder.CreateIndex(
                 name: "IX_AspNetRoleClaims_RoleId",
@@ -281,6 +343,21 @@ namespace ECommerceApi.Persistence.Migrations
                 column: "NormalizedUserName",
                 unique: true,
                 filter: "[NormalizedUserName] IS NOT NULL");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Details_CategoryId",
+                table: "Details",
+                column: "CategoryId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_ProductCategories_CategoryId",
+                table: "ProductCategories",
+                column: "CategoryId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Products_BrandId",
+                table: "Products",
+                column: "BrandId");
         }
 
         /// <inheritdoc />
@@ -302,94 +379,25 @@ namespace ECommerceApi.Persistence.Migrations
                 name: "AspNetUserTokens");
 
             migrationBuilder.DropTable(
+                name: "Details");
+
+            migrationBuilder.DropTable(
+                name: "ProductCategories");
+
+            migrationBuilder.DropTable(
                 name: "AspNetRoles");
 
             migrationBuilder.DropTable(
                 name: "AspNetUsers");
 
-            migrationBuilder.UpdateData(
-                table: "Brands",
-                keyColumn: "Id",
-                keyValue: 1,
-                columns: new[] { "CreatedDate", "Name" },
-                values: new object[] { new DateTime(2024, 8, 26, 14, 18, 33, 244, DateTimeKind.Local).AddTicks(6084), "Baby & Garden" });
+            migrationBuilder.DropTable(
+                name: "Categories");
 
-            migrationBuilder.UpdateData(
-                table: "Brands",
-                keyColumn: "Id",
-                keyValue: 2,
-                columns: new[] { "CreatedDate", "Name" },
-                values: new object[] { new DateTime(2024, 8, 26, 14, 18, 33, 244, DateTimeKind.Local).AddTicks(6103), "Home, Jewelery & Garden" });
+            migrationBuilder.DropTable(
+                name: "Products");
 
-            migrationBuilder.UpdateData(
-                table: "Brands",
-                keyColumn: "Id",
-                keyValue: 3,
-                columns: new[] { "CreatedDate", "Name" },
-                values: new object[] { new DateTime(2024, 8, 26, 14, 18, 33, 244, DateTimeKind.Local).AddTicks(6118), "Home, Grocery & Jewelery" });
-
-            migrationBuilder.UpdateData(
-                table: "Categories",
-                keyColumn: "Id",
-                keyValue: 1,
-                column: "CreatedDate",
-                value: new DateTime(2024, 8, 26, 14, 18, 33, 245, DateTimeKind.Local).AddTicks(274));
-
-            migrationBuilder.UpdateData(
-                table: "Categories",
-                keyColumn: "Id",
-                keyValue: 2,
-                column: "CreatedDate",
-                value: new DateTime(2024, 8, 26, 14, 18, 33, 245, DateTimeKind.Local).AddTicks(276));
-
-            migrationBuilder.UpdateData(
-                table: "Categories",
-                keyColumn: "Id",
-                keyValue: 3,
-                column: "CreatedDate",
-                value: new DateTime(2024, 8, 26, 14, 18, 33, 245, DateTimeKind.Local).AddTicks(278));
-
-            migrationBuilder.UpdateData(
-                table: "Categories",
-                keyColumn: "Id",
-                keyValue: 4,
-                column: "CreatedDate",
-                value: new DateTime(2024, 8, 26, 14, 18, 33, 245, DateTimeKind.Local).AddTicks(279));
-
-            migrationBuilder.UpdateData(
-                table: "Details",
-                keyColumn: "Id",
-                keyValue: 1,
-                columns: new[] { "CreatedDate", "Description", "Title" },
-                values: new object[] { new DateTime(2024, 8, 26, 14, 18, 33, 248, DateTimeKind.Local).AddTicks(665), "Quia balıkhaneye şafak mıknatıslı sed.", "Lakin." });
-
-            migrationBuilder.UpdateData(
-                table: "Details",
-                keyColumn: "Id",
-                keyValue: 2,
-                columns: new[] { "CreatedDate", "Description", "Title" },
-                values: new object[] { new DateTime(2024, 8, 26, 14, 18, 33, 248, DateTimeKind.Local).AddTicks(704), "Rem oldular exercitationem dolor bundan.", "Voluptate." });
-
-            migrationBuilder.UpdateData(
-                table: "Details",
-                keyColumn: "Id",
-                keyValue: 3,
-                columns: new[] { "CreatedDate", "Description", "Title" },
-                values: new object[] { new DateTime(2024, 8, 26, 14, 18, 33, 248, DateTimeKind.Local).AddTicks(744), "Sayfası iusto bahar ex cezbelendi.", "Kalemi." });
-
-            migrationBuilder.UpdateData(
-                table: "Products",
-                keyColumn: "Id",
-                keyValue: 1,
-                columns: new[] { "CreatedDate", "Discount", "Price", "Title" },
-                values: new object[] { new DateTime(2024, 8, 26, 14, 18, 33, 251, DateTimeKind.Local).AddTicks(1165), 9.192973414996250m, 335.52m, "Refined Rubber Pants" });
-
-            migrationBuilder.UpdateData(
-                table: "Products",
-                keyColumn: "Id",
-                keyValue: 2,
-                columns: new[] { "CreatedDate", "Description", "Discount", "Price", "Title" },
-                values: new object[] { new DateTime(2024, 8, 26, 14, 18, 33, 251, DateTimeKind.Local).AddTicks(1193), "The Nagasaki Lander is the trademarked name of several series of Nagasaki sport bikes, that started with the 1984 ABC800J", 7.673532691411220m, 642.50m, "Handcrafted Wooden Sausages" });
+            migrationBuilder.DropTable(
+                name: "Brands");
         }
     }
 }
