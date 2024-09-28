@@ -60,3 +60,5 @@ Throughout this project, I gained significant insights into advanced .NET Core c
 https://github.com/microsoftarchive/redis/releases  
 Redis-x64-3.0.504.zip
 
+migration işlemi persistence ta yapılacak
+
