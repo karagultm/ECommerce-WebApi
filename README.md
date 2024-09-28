@@ -56,3 +56,7 @@ Swagger
 Throughout this project, I gained significant insights into advanced .NET Core concepts, particularly focusing on the application of Onion Architecture and the CQRS pattern in real-world scenarios. I deepened my understanding of how to structure large-scale applications for maintainability and scalability. Additionally, working with dependency injection, MediatR, and Entity Framework Core provided me with hands-on experience in managing complex business logic and ensuring high-performance data operations. This project also helped me enhance my skills in writing clean, testable code and developing APIs that follow best practices for security and usability.
 
 [] Projede kullanılan kütüphaneler, çalıştırılmadan önce indirilecekler, redisin çalıştırılması gerektiği gibi yerleri de buraya ekle mutlaka
+
+https://github.com/microsoftarchive/redis/releases  
+Redis-x64-3.0.504.zip
+
