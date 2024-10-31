@@ -31,8 +31,7 @@ API: The entry point of the application, exposing RESTful endpoints to interact 
 
 ## Getting Started:
 
-Clone the repository: git clone [https://github.com/yourusername/ecommerce-platform-api.git
-https://github.com/karagultm/ECommerce-WebApi](https://github.com/karagultm/ECommerce-WebApi)
+Clone the repository: git clone https://github.com/karagultm/ECommerce-WebApi](https://github.com/karagultm/ECommerce-WebApi)
 
 Navigate to the project directory: cd ecommerce-platform-api
 
